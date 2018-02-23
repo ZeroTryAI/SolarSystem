@@ -4,16 +4,13 @@
 #include <math.h>
 
 #define G 6.67428e-11 //The gravitational constant
-#define AU (149.6e6 * 1000) //Astro units
-#define SCALE 250 / AU 
+
 
 class Body: public sf::CircleShape
 {
 public:
 	Body();
-	Body(std::string name, sf::Vector2f pos_, std::string texture_, double radius_, double mass_, sf::Vector2f vel_);
-	
-	sf::Vector2f calcAttraction(Body* othBody);
+	Body(std::string name, sf::Vector2f pos_, sf::Vector2f vel_, std::string texture_, float radius_, float mass_);
 	
 	bool operator!=(Body& rhv);
 	void draw(sf::RenderWindow* window_);
@@ -21,7 +18,7 @@ public:
 	std::string getName();
 	sf::Vector2f getPos();
 	sf::Vector2f getVel();
-	double getMass();
+	float getMass();
 	
 	void setPos(sf::Vector2f pos_);
 	void setVeloc(sf::Vector2f vel_);
@@ -32,17 +29,12 @@ private:
 	// Position in Decade system
 	sf::Vector2f pos;
 	// Radius of object
-	double radius;
+	float radius;
 	// Texture of shape
 	sf::Texture texture;
 	
-	
-	//Current force vector
-	sf::Vector2f currectForce;
-	// Begining velocity
-	double v0;
 	// Current velocity
 	sf::Vector2f v;
 	// Mass of body
-	double mass;
+	float mass;
 };

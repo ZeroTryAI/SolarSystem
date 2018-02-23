@@ -1,6 +1,6 @@
 #include "System.h"
-
-
+#include <Windows.h>
+#include <iostream>
 
 System::System()
 {
@@ -19,8 +19,9 @@ void System::addBody(Body& body_)
 void System::action()
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Solar System", sf::Style::Close);
-	int timestep = 24 * 3600;
-	// set background
+	
+	int timestep = 1;
+
 	sf::Texture background;
 	sf::Sprite stars;
 	background.loadFromFile("stars.jpg");
@@ -37,27 +38,28 @@ void System::action()
 		}
 		step++;
 
-		std::vector<sf::Vector2f> forces;
-
 		for (auto body : bodies)
 		{
-			sf::Vector2f total_force(0,0);
 			for (auto other : bodies)
 			{
-				if (body != other)
+				if ((body->getName() == "Earth") && (body->getName() != other->getName()))
 				{
-					total_force += body->calcAttraction(other);
+					std::cout << "Old speed" << other->getVel().x << " " << other->getVel().y << std::endl;
+					other->setPos(other->getPos() + other->getVel());
+					float x0 = body->getPos().x;
+					float y0 = body->getPos().y;
+
+					float x1 = other->getPos().x;
+					float y1 = other->getPos().y;
+
+					float dist = sqrt((x0 - x1)*(x0 - x1) + (y0 - y1)*(y0 - y1));
+					sf::Vector2f RadVec = (other->getPos() - body->getPos()) / dist;
+					sf::Vector2f FGrav = -(RadVec*12000.f) / (dist*dist);
+					other->setVeloc(other->getVel() + FGrav);
+					std::cout << "New speed" << other->getVel().x << " " << other->getVel().y << std::endl;
+					other->setPos(other->getPos() + other->getVel());
 				}
 			}
-			std::cout << total_force.x << ' ' << total_force.y << std::endl;
-			forces.push_back(total_force);
-		}
-
-		for (int i=0;i<bodies.size();i++)
-		{
-			bodies[i]->setVeloc(sf::Vector2f(bodies[i]->getVel().x + forces[i].x/bodies[i]->getMass()*timestep, bodies[i]->getVel().y + forces[i].y/bodies[i]->getMass()*timestep));
-			bodies[i]->setPos(sf::Vector2f(bodies[i]->getVel().x*timestep, bodies[i]->getVel().y*timestep));
-			bodies[i]->sf::CircleShape::setPosition(bodies[i]->getPos().x * SCALE, bodies[i]->getPos().x * SCALE);
 		}
 
 		window.clear();
@@ -66,5 +68,6 @@ void System::action()
 			bodies[i]->draw(&window);
 
 		window.display();
+		Sleep(500/33);
 	}
 }

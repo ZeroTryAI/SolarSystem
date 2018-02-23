@@ -10,8 +10,8 @@ Body::Body()
 	setRadius(100.f);
 }
 
-Body::Body(std::string name_, sf::Vector2f pos_, std::string texture_, double radius_, double mass_, sf::Vector2f vel_)
-	:CircleShape(), pos(pos_.x*SCALE, pos_.y*SCALE), radius(radius_)
+Body::Body(std::string name_, sf::Vector2f pos_, sf::Vector2f vel_, std::string texture_, float radius_, float mass_)
+	:CircleShape(), pos(pos_.x, pos_.y), radius(radius_)
 {
 	v = vel_;
 	name = name_;
@@ -25,17 +25,6 @@ Body::Body(std::string name_, sf::Vector2f pos_, std::string texture_, double ra
 	setTexture(&texture);
 }
 
-sf::Vector2f Body::calcAttraction(Body* othBody)
-{
-	//calc distance
-	double dx = pos.x - othBody->getPos().x, dy= pos.y - othBody->getPos().y;
-	double distance = std::sqrt(dx * dx + dy * dy);
-	//calc force
-	double force = G * this->mass * othBody->getMass() / (distance*distance);
-	//calc and return vector of force	
-	double alpha = std::atan2f(dy,dx);	
-	return sf::Vector2f(std::cos(alpha)*force, std::sin(alpha)*force);
-}
 
 bool Body::operator!=(Body& rhv)
 {
@@ -44,6 +33,7 @@ bool Body::operator!=(Body& rhv)
 
 void Body::draw(sf::RenderWindow* window_)
 {
+	setPosition(this->getPos());
 	window_->draw(*this);
 }
 
@@ -53,7 +43,7 @@ sf::Vector2f Body::getPos(){ return pos; }
 
 sf::Vector2f Body::getVel(){ return v; }
 
-double Body::getMass(){ return mass; }
+float Body::getMass(){ return mass; }
 
 void Body::setPos(sf::Vector2f pos_)
 {

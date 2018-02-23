@@ -6,15 +6,11 @@ int main()
 {
 	System sys;
 
-	// initialize objects
+	Body earth("Earth", sf::Vector2f(800, 300), sf::Vector2f(0, 0), "earth.jpg", 20.f, 500.f);
+	Body moon("Moons", sf::Vector2f(600, 200), sf::Vector2f(4, -1),"moon.jpg", 8.f, 200.f);
 
-	Body sun("Sun", sf::Vector2f(0 * AU, 0 * AU), "sun.png", 30.f, 1.98892e30, sf::Vector2f(0,0));
-	Body earth("Earth", sf::Vector2f(1 * AU, 1*AU),"earth.jpg", 5.f, 5.9742e24, sf::Vector2f(0 , -29.783 * 1000));
-	//Body moon("Moon", sf::Vector2f(0.723 * AU, 0), "moon.jpg", 8.f, 4.8685e24);
-
-	sys.addBody(sun);
 	sys.addBody(earth);
-	//sys.addBody(moon);
+	sys.addBody(moon);
 
 	sys.action();
 
