@@ -1,37 +1,22 @@
-#include "Planet.h"
+#include "System.h"
 #include "Vector2f.h"
 
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Solar System", sf::Style::Close);
-
-	// set background
-	sf::Texture background;
-	sf::Sprite stars;
-	background.loadFromFile("stars.jpg");
-	stars.setTexture(background);
+	System sys;
 
 	// initialize objects
-	Planet earth(sf::Vector2f(200,100),"earth.jpg",60.f);
-	Planet moon(sf::Vector2f(400,400), "moon.jpg", 25.f);
 
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		window.clear();
-		window.draw(stars);
+	Body sun("Sun", sf::Vector2f(0 * AU, 0 * AU), "sun.png", 30.f, 1.98892e30, sf::Vector2f(0,0));
+	Body earth("Earth", sf::Vector2f(1 * AU, 1*AU),"earth.jpg", 5.f, 5.9742e24, sf::Vector2f(0 , -29.783 * 1000));
+	//Body moon("Moon", sf::Vector2f(0.723 * AU, 0), "moon.jpg", 8.f, 4.8685e24);
 
-		window.draw(earth);
-		window.draw(moon);
+	sys.addBody(sun);
+	sys.addBody(earth);
+	//sys.addBody(moon);
 
-		window.display();
-	}
+	sys.action();
 
 	return 0;
 }

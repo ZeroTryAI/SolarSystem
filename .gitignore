@@ -240,3 +240,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+SolarSystem/SolarSystem.vcxproj
+SolarSystem/SolarSystem.vcxproj
+*.vcxproj
+SolarSystem/SolarSystem.vcxproj.filters
